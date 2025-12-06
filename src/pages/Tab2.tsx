@@ -1,5 +1,5 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import ExploreContainer from '../components/ExploreContainer';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonInput, IonTextarea, IonButton, IonIcon } from '@ionic/react';
+import { saveOutline } from 'ionicons/icons';
 import './Tab2.css';
 
 const Tab2: React.FC = () => {
@@ -7,16 +7,46 @@ const Tab2: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Tab 2</IonTitle>
+          <IonTitle>Nuevo Repositorio</IonTitle>
         </IonToolbar>
       </IonHeader>
+      
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">Tab 2</IonTitle>
+            <IonTitle size="large">Nuevo Repositorio</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <ExploreContainer name="Tab 2 page" />
+
+        {/*contenedor de estilos */}
+        <div className="form-container">
+          <IonList className="form-field">
+            <IonItem>
+              <IonInput 
+                label="Nombre del repositorio" 
+                labelPlacement="floating" 
+                placeholder="Ej: App de Delivery" 
+              />
+            </IonItem>
+
+            <IonItem>
+              <IonTextarea 
+                label="Descripción" 
+                labelPlacement="floating" 
+                placeholder="Descripción del proyecto" 
+                rows={4} 
+              />
+            </IonItem>
+          </IonList>
+
+          <div className="form-field" style={{ padding: '0' }}>
+            <IonButton expand="block" shape="round">
+              <IonIcon slot="start" icon={saveOutline} />
+              Guardar Repositorio
+            </IonButton>
+          </div>
+        </div>
+
       </IonContent>
     </IonPage>
   );
