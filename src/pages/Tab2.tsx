@@ -1,31 +1,84 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonInput, IonTextarea, IonButton, IonIcon } from '@ionic/react';
-import { saveOutline } from 'ionicons/icons';
+import React, { useState } from 'react';
+import { 
+  IonContent, IonHeader, IonPage, IonTitle, IonToolbar, 
+  IonList, IonItem, IonInput, IonTextarea, IonButton, 
+  IonLoading, IonToast 
+} from '@ionic/react';
+import { useHistory } from 'react-router-dom';
+import { createRepo } from '../services/GithubService';
 import './Tab2.css';
 
 const Tab2: React.FC = () => {
+  const history = useHistory();
+
+  // Estado del formulario
+  const [repoFormData, setRepoFormData] = useState({
+    name: '',
+    description: ''
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState('');
+
+  const saveRepo = async () => {
+    // 1. Validación
+    if (!repoFormData.name.trim()) {
+      setMessage("¡El nombre del repositorio es obligatorio!");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      // 2. Llamada al servicio (POST)
+      await createRepo(repoFormData);
+      
+      setLoading(false);
+      setMessage("Repositorio creado con éxito");
+
+      // 3. Limpiar formulario
+      setRepoFormData({ name: '', description: '' });
+
+      // 4. Redirección automática a la lista
+      setTimeout(() => {
+        history.push('/tab1');
+      }, 1000);
+
+    } catch (error) {
+      
+      console.error("Error al crear repo:", error); 
+      
+      setLoading(false);
+      setMessage("Error: Es posible que el nombre ya exista.");
+    }
+  };
+
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Nuevo Repositorio</IonTitle>
+          <IonTitle>Crear Repositorio</IonTitle>
         </IonToolbar>
       </IonHeader>
       
       <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Nuevo Repositorio</IonTitle>
-          </IonToolbar>
-        </IonHeader>
+        <IonLoading isOpen={loading} message="Creando en GitHub..." />
+        <IonToast 
+          isOpen={!!message} 
+          message={message} 
+          duration={3000} 
+          onDidDismiss={() => setMessage('')} 
+          color={message.includes("Error") ? "danger" : "success"}
+        />
 
-        {/*contenedor de estilos */}
         <div className="form-container">
-          <IonList className="form-field">
+          <IonList>
             <IonItem>
               <IonInput 
-                label="Nombre del repositorio" 
+                label="Nombre del Repositorio" 
                 labelPlacement="floating" 
-                placeholder="Ej: App de Delivery" 
+                placeholder="ej. mi-proyecto-ionic"
+                value={repoFormData.name}
+                onIonInput={e => setRepoFormData({...repoFormData, name: e.detail.value!})}
               />
             </IonItem>
 
@@ -33,20 +86,20 @@ const Tab2: React.FC = () => {
               <IonTextarea 
                 label="Descripción" 
                 labelPlacement="floating" 
-                placeholder="Descripción del proyecto" 
-                rows={4} 
+                placeholder="Breve descripción del proyecto"
+                rows={4}
+                value={repoFormData.description}
+                onIonInput={e => setRepoFormData({...repoFormData, description: e.detail.value!})}
               />
             </IonItem>
           </IonList>
 
-          <div className="form-field" style={{ padding: '0' }}>
-            <IonButton expand="block" shape="round">
-              <IonIcon slot="start" icon={saveOutline} />
+          <div style={{ padding: '20px' }}>
+            <IonButton expand="block" onClick={saveRepo}>
               Guardar Repositorio
             </IonButton>
           </div>
         </div>
-
       </IonContent>
     </IonPage>
   );

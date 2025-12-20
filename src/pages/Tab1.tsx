@@ -1,13 +1,43 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList } from '@ionic/react';
+import React, { useState } from 'react';
+import { 
+  IonContent, IonHeader, IonPage, IonTitle, IonToolbar, 
+  IonList, IonLoading, IonToast, useIonViewWillEnter 
+} from '@ionic/react';
 import RepoItem from '../components/RepoItem';
+import { getRepos } from '../services/GithubService'; // Importamos el servicio
+import { GitHubRepo } from '../interfaces/types';    // Importamos la interfaz
 import './Tab1.css';
 
 const Tab1: React.FC = () => {
+  // Estado para guardar los repositorios reales
+  const [repos, setRepos] = useState<GitHubRepo[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>('');
+
+  // CAMBIO CLAVE: Usamos useIonViewWillEnter en lugar de useEffect
+  // Esto hace que la función se ejecute CADA VEZ que entras a la pestaña
+  useIonViewWillEnter(() => {
+    cargarRepositorios();
+  });
+
+  const cargarRepositorios = async () => {
+    try {
+      setLoading(true);
+      const data = await getRepos(); // Llama a la API
+      setRepos(data); // Actualiza la lista
+      setLoading(false);
+    } catch (err) {
+      console.error(err);
+      setError('Error al cargar los repositorios.');
+      setLoading(false);
+    }
+  };
+
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Repositorios</IonTitle>
+          <IonTitle>Mis Repositorios</IonTitle>
         </IonToolbar>
       </IonHeader>
       
@@ -18,21 +48,26 @@ const Tab1: React.FC = () => {
           </IonToolbar>
         </IonHeader>
 
+        {/* Indicador de Carga */}
+        <IonLoading isOpen={loading} message="Actualizando lista..." duration={2000} />
+        
+        {/* Aviso de Error */}
+        <IonToast 
+          isOpen={!!error} 
+          message={error} 
+          duration={3000} 
+          color="danger"
+          onDidDismiss={() => setError('')}
+        />
+
+        {/* Lista Dinámica Real */}
         <IonList>
-          {/*foto pendiente */}
-          <RepoItem 
-            name="Repositorio 1" 
-            imagen="https://ionicframework.com/docs/img/demos/card-media.png" 
-          />
-
-          {/* fp */}
-          <RepoItem name="Repositorio 2" />
-
-          {/* fp */}
-          <RepoItem 
-            name="Repositorio 3" 
-            imagen="https://ionicframework.com/docs/img/demos/card-media.png" 
-          />
+          {repos.map((repo) => (
+            <RepoItem 
+              key={repo.id}       // React necesita una ID única
+              name={repo.name}    // Nombre real del repo
+            />
+          ))}
         </IonList>
 
       </IonContent>
