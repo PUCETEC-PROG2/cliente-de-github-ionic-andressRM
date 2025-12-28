@@ -48,3 +48,27 @@ export const createRepo = async (repoData: { name: string; description: string }
     throw error;
   }
 };
+
+// actualizar repo (PATCH)
+export const updateRepo = async (owner: string, repoName: string, data: { description: string }) => {
+  try {
+    const response = await client.patch(`/repos/${owner}/${repoName}`, {
+      description: data.description
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error actualizando repo:', error);
+    throw error;
+  }
+};
+
+// eliminar repo (DELETE)
+export const deleteRepo = async (owner: string, repoName: string) => {
+  try {
+    const response = await client.delete(`/repos/${owner}/${repoName}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error eliminando repo:', error);
+    throw error;
+  }
+};
