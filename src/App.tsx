@@ -10,15 +10,15 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { addCircle, list, personCircleOutline } from 'ionicons/icons'; // Importamos los iconos correctos
+import { addCircle, list, personCircleOutline } from 'ionicons/icons'; // Importamos los iconos (no funca, revisar)
 import Tab1 from './pages/Tab1';
 import Tab2 from './pages/Tab2';
 import Tab3 from './pages/Tab3';
 
-/* Core CSS required for Ionic components to work properly */
+
 import '@ionic/react/css/core.css';
 
-/* Basic CSS for apps built with Ionic */
+
 import '@ionic/react/css/normalize.css';
 import '@ionic/react/css/structure.css';
 import '@ionic/react/css/typography.css';

@@ -5,7 +5,7 @@ import {
 } from '@ionic/react';
 import RepoItem from '../components/RepoItem';
 import { getRepos } from '../services/GithubService'; // Importamos el servicio
-import { GitHubRepo } from '../interfaces/types';    // Importamos la interfaz
+import { GitHubRepo } from '../interfaces/types';    // y la interfaz
 import './Tab1.css';
 
 const Tab1: React.FC = () => {
@@ -15,7 +15,7 @@ const Tab1: React.FC = () => {
   const [error, setError] = useState<string>('');
 
   // CAMBIO CLAVE: Usamos useIonViewWillEnter en lugar de useEffect
-  // Esto hace que la función se ejecute CADA VEZ que entras a la pestaña
+  // Esto hara que la función se ejecute cadavez que se entra a la pestana
   useIonViewWillEnter(() => {
     cargarRepositorios();
   });

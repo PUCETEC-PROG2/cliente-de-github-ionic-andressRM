@@ -10,7 +10,7 @@ const RepoItem: React.FC<RepoProps> = ({ name, imagen }) => {
   return (
     <IonItem button>
       <IonThumbnail slot="start">
-        {/* montañas por defecto */}
+        {/* montañas por defecto, revisar img*/}
         <img 
           alt="miniatura" 
           src={imagen || "https://ionicframework.com/docs/img/demos/thumbnail.svg"} 

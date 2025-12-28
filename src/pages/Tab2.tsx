@@ -11,7 +11,7 @@ import './Tab2.css';
 const Tab2: React.FC = () => {
   const history = useHistory();
 
-  // Estado del formulario
+  // Estado del formulari
   const [repoFormData, setRepoFormData] = useState({
     name: '',
     description: ''
@@ -35,10 +35,10 @@ const Tab2: React.FC = () => {
       setLoading(false);
       setMessage("Repositorio creado con éxito");
 
-      // 3. Limpiar formulario
+      // 3. Limpiar formulari
       setRepoFormData({ name: '', description: '' });
 
-      // 4. Redirección automática a la lista
+      // 4. Redirección atomática a la lista
       setTimeout(() => {
         history.push('/tab1');
       }, 1000);
