@@ -11,7 +11,7 @@ import './Tab2.css';
 const Tab2: React.FC = () => {
   const history = useHistory();
 
-  // Estado del formulari
+  // Estado del frmulario
   const [repoFormData, setRepoFormData] = useState({
     name: '',
     description: ''
